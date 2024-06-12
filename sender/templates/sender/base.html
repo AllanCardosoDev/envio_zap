@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WhatsApp Sender</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="{% url 'home' %}">WhatsApp Sender</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'send_message' %}"
+              >Enviar Mensagem</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'manage_contacts' %}"
+              >Gerenciar Contatos</a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">{% block content %}{% endblock %}</div>
+  </body>
+</html>

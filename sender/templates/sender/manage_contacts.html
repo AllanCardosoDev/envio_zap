@@ -1,0 +1,30 @@
+{% extends 'sender/base.html' %} {% block content %}
+<h1>Gerenciar Contatos</h1>
+<a href="{% url 'add_contact' %}" class="btn btn-primary">Adicionar Contato</a>
+<a href="{% url 'home' %}" class="btn btn-secondary">Voltar</a>
+<table class="table mt-3">
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Número de Telefone</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for contact in contacts %}
+    <tr>
+      <td>{{ contact.name }}</td>
+      <td>{{ contact.phone_number }}</td>
+      <td>
+        <a href="{% url 'edit_contact' contact.pk %}" class="btn btn-warning"
+          >Editar</a
+        >
+        <a href="{% url 'delete_contact' contact.pk %}" class="btn btn-danger"
+          >Excluir</a
+        >
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

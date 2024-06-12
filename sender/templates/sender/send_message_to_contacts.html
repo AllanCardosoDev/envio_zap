@@ -1,0 +1,62 @@
+{% extends 'sender/base.html' %} {% block content %}
+<h1>Enviar Mensagem para Contatos</h1>
+<form id="send-message-to-contacts-form" method="post">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="message">Mensagem</label>
+    <textarea
+      class="form-control"
+      id="message"
+      name="message"
+      rows="3"
+    ></textarea>
+  </div>
+  <div class="form-group">
+    <label for="contacts">Selecionar Contatos</label>
+    <div id="contacts" class="form-control" style="height: auto">
+      {% for contact in contacts %}
+      <div>
+        <input
+          type="checkbox"
+          id="contact_{{ contact.id }}"
+          name="contacts"
+          value="{{ contact.id }}"
+        />
+        <label for="contact_{{ contact.id }}"
+          >{{ contact.name }}: {{ contact.phone_number }}</label
+        >
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Enviar</button>
+  <a href="{% url 'send_message' %}" class="btn btn-secondary">Voltar</a>
+</form>
+<script>
+  document.getElementById("send-message-to-contacts-form").onsubmit = function (
+    e
+  ) {
+    e.preventDefault();
+    var form = this;
+    var formData = new FormData(form);
+    fetch(form.action, {
+      method: form.method,
+      body: formData,
+      headers: {
+        "X-CSRFToken": formData.get("csrfmiddlewaretoken"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
+          alert("Mensagens enviadas com sucesso!");
+          // Desmarcar os checkboxes após o envio
+          var checkboxes = document.querySelectorAll(
+            '#contacts input[type="checkbox"]'
+          );
+          checkboxes.forEach((checkbox) => (checkbox.checked = false));
+        }
+      });
+  };
+</script>
+{% endblock %}
