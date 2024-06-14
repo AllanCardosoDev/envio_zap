@@ -6,6 +6,7 @@ import pywhatkit as kit
 import time
 import threading
 import sqlite3
+import pyautogui
 
 # Inicialização do banco de dados
 def init_db():
@@ -23,7 +24,11 @@ def init_db():
 # Função para enviar mensagem pelo WhatsApp
 def send_whatsapp_message(phone_number, message, wait_time=10):
     try:
-        kit.sendwhatmsg_instantly(phone_number, message, wait_time=wait_time, tab_close=True, close_time=5)
+        kit.sendwhatmsg_instantly(phone_number, message, wait_time=wait_time, tab_close=False)
+        time.sleep(15)  # Aguarde um tempo maior para garantir que a mensagem seja enviada
+        pyautogui.press('enter')  # Envia a mensagem
+        time.sleep(5)  # Aguarde um tempo para garantir que a mensagem seja enviada
+        pyautogui.hotkey('ctrl', 'w')  # Feche a aba após o envio
     except Exception as e:
         print(f"Erro ao enviar mensagem para {phone_number}: {e}")
 
@@ -58,7 +63,7 @@ def send_message(request):
         def send_messages():
             for phone_number in all_numbers:
                 send_whatsapp_message(phone_number, message, wait_time=10)
-                time.sleep(10)
+                time.sleep(10)  # Ajustado tempo para garantir que a mensagem seja enviada
 
         threading.Thread(target=send_messages).start()
         return render(request, 'sender/send_message.html', {
